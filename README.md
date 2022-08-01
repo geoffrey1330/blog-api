@@ -1,1 +1,1 @@
-# node-todo-api
+# node-blog-api
