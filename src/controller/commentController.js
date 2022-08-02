@@ -1,16 +1,21 @@
 const { error, success } = require("../utils/baseController");
 const { logger } = require("../utils/logger");
 const Comment = require("../service/comment");
-
+const Post = require("../service/post");
 
 exports.create = async (req, res) => {
     try {
+        const {postid} = req.params;
         const {text} = req.body;
         const author = req.user._id;
         const comment = await new Comment({
             text,
             author
         }).create();
+        
+        const post = await new Post({ id:postid, author }).getPostById();
+        post.comments.push(text);
+        post.save()
         return success(res, { comment });
     }catch(err) {
         logger.error("Error occurred at signup", err);
@@ -33,7 +38,7 @@ exports.getAllComments = async (req, res) => {
 // get a comment by id
 exports.getCommentById = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { postid, id } = req.params;
         const author = req.user._id;
         const comment = await new Comment({ id, author }).getCommentById();
         return success(res, { comment });
@@ -47,7 +52,7 @@ exports.getCommentById = async (req, res) => {
 exports.updateCommentById = async (req, res) => {
     try {
         const { text } = req.body;
-        const { id } = req.params;
+        const { postid, id } = req.params;
         const author = req.user._id;
         const comment = await new Comment({ id, author, text }).updateCommentById();
         return success(res, { comment });
@@ -60,7 +65,7 @@ exports.updateCommentById = async (req, res) => {
 // delete a Comment by id
 exports.deleteCommentById = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { postid, id } = req.params;
         const author = req.user._id;
         const comment = await new Comment({ id, author }).deleteCommentById();
         return success(res, { comment });
