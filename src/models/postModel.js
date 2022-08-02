@@ -25,6 +25,11 @@ const postSchema = new Schema(
             type: Date,
             required: true,
         },
+        comments: [
+            {
+                type: String,
+            },
+        ],
     },
     {
         strictQuery: 'throw'

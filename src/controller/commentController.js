@@ -1,72 +1,69 @@
 const { error, success } = require("../utils/baseController");
 const { logger } = require("../utils/logger");
-const Post = require("../service/post");
+const Comment = require("../service/comment");
 
 
 exports.create = async (req, res) => {
     try {
-        const { name, description, image, time } = req.body;
+        const {text} = req.body;
         const author = req.user._id;
-        const post = await new Post({
-            name,
-            description,
-            image,
-            time,
+        const comment = await new Comment({
+            text,
             author
         }).create();
-        return success(res, { post });
+        return success(res, { comment });
     }catch(err) {
         logger.error("Error occurred at signup", err);
         return error(res, { code: err.code, message: err })
     }
 }
 
-// get all user post
-exports.getAllPosts = async (req, res) => {
+// get all user Comment
+exports.getAllComments = async (req, res) => {
     try {
         const author = req.user._id;
-        const posts = await new Post({ author }).getAllPosts();
-        return success(res, { posts });
+        const comments = await new Comment({ author }).getAllComments();
+        return success(res, { comments });
     }catch(err) {
         logger.error("Error occurred at signup", err);
         return error(res, { code: err.code, message: err })
     }
 }
 
-// get a post by id
-exports.getPostById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const author = req.user._id;
-        const post = await new Post({ id, author }).getPostById();
-        return success(res, { post });
-    }catch(err) {
-        logger.error("Error occurred at signup", err);
-        return error(res, { code: err.code, message: err })
-    }
-}
-
-// update a post by id
-exports.updatePostById = async (req, res) => {
-    try {
-        const { name, description, image, time } = req.body;
-        const { id } = req.params;
-        const author = req.user._id;
-        const post = await new Post({ id, author, name, description, image, time }).updatePostById();
-        return success(res, { post });
-    }catch(err) {
-        logger.error("Error occurred at signup", err);
-        return error(res, { code: err.code, message: err })
-    }
-}
-
-// delete a post by id
-exports.deletePostById = async (req, res) => {
+// get a comment by id
+exports.getCommentById = async (req, res) => {
     try {
         const { id } = req.params;
         const author = req.user._id;
-        const post = await new Post({ id, author }).deletePostById();
-        return success(res, { post });
+        const comment = await new Comment({ id, author }).getCommentById();
+        return success(res, { comment });
+    }catch(err) {
+        logger.error("Error occurred at signup", err);
+        return error(res, { code: err.code, message: err })
+    }
+}
+
+// update a Comment by id
+exports.updateCommentById = async (req, res) => {
+    try {
+        const { text } = req.body;
+        const { id } = req.params;
+        const author = req.user._id;
+        const comment = await new Comment({ id, author, text }).updateCommentById();
+        return success(res, { comment });
+    }catch(err) {
+        logger.error("Error occurred at signup", err);
+        return error(res, { code: err.code, message: err })
+    }
+}
+
+// delete a Comment by id
+exports.deleteCommentById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const author = req.user._id;
+        const comment = await new Comment({ id, author }).deleteCommentById();
+        return success(res, { comment });
     }catch(err) {
         logger.error("Error occurred at signup", err);
         return error(res, { code: err.code, message: err })

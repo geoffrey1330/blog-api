@@ -12,6 +12,7 @@ const { PORT } = require("./src/core/config");
 const baseRouter = require("./src/router");
 const postRouter = require("./src/router/postRouter");
 const userRouter = require("./src/router/userRouter");
+const commentRouter = require("./src/router/commentRouter");
 
 // App Init
 const app = express();
@@ -26,6 +27,7 @@ app.use(morgan("tiny"));
 app.use("/", baseRouter);
 app.use("/api", userRouter);
 app.use("/api", postRouter);
+app.use("/api", commentRouter);
 
 app.listen(PORT, () =>
   logger.info(`Backend Service Started on port ${PORT}`)
