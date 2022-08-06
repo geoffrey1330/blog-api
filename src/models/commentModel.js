@@ -9,6 +9,10 @@ const commentSchema = new Schema(
             required: true,
         },
         text: String,
+        date: {
+            type: Number,
+            default: Date.now
+          }, 
             
     },
     {

@@ -25,9 +25,12 @@ const postSchema = new Schema(
             type: Date,
             required: true,
         },
-        comments: [
-            {
-                type: String,
+        comments: [{
+            comment: {
+              type: String,
+              minlength: 8,
+              maxlength: 128
+            },
             },
         ],
     },
