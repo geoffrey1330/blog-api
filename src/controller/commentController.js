@@ -10,12 +10,10 @@ exports.create = async (req, res) => {
         const author = req.user._id;
         const comment = await new Comment({
             text,
+            postid,
             author
         }).create();
         
-        const post = await new Post({ id:postid, author }).getPostById();
-        post.comments.push(comment);
-        post.save() 
         return success(res, { comment });
     }catch(err) {
         logger.error("Error occurred at signup", err);
@@ -67,13 +65,8 @@ exports.deleteCommentById = async (req, res) => {
     try {
         const { postid, id } = req.params;
         const author = req.user._id;
-        const comment = await new Comment({ id, author }).deleteCommentById();
-        const post = await new Post({ id:postid, author }).getPostById();
+        const comment = await new Comment({ id, postid, author }).deleteCommentById();
         
-        const delcom = post.comments.filter(comment => String(comment._id) !== id );
-        post.comments = delcom
-        post.save()
-       
         return success(res, { comment });
     }catch(err) {
         logger.error("Error occurred at signup", err);
