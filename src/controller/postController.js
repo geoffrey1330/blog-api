@@ -2,7 +2,6 @@ const { error, success } = require("../utils/baseController");
 const { logger } = require("../utils/logger");
 const Post = require("../service/post");
 
-
 exports.create = async (req, res) => {
     try {
         const { name, description, image, time } = req.body;
